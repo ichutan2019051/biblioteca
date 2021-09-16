@@ -1,0 +1,11 @@
+<div class="login">
+    <div class="loginCard">
+        <h4>Login</h4>
+        <p>Que bien verte de nuevo</p>
+        <form [formGroup]="formularioLogin">
+            <input type="email" placeholder="Ejemplo: email@kinal.com" formControlName="userName" required>
+            <input type="password" placeholder="Ejemplo: password123" formControlName="password" required>
+            <button class="btn" type="submit" (click)="login()">Login</button>
+        </form>
+    </div>
+</div>

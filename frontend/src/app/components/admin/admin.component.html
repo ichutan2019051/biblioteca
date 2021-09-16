@@ -1,0 +1,721 @@
+<app-nav></app-nav>
+<div class="admin">
+    <div class="titulos text-center">
+      <h4>Administración</h4>
+      <p class="text-sm-muted">Adminsitra tu biblioteca aqui</p>
+    </div>
+    <div class="contenedorUsuarios">
+        <h4>Usuarios</h4>
+        <p>Adminsitra todos tus usuarios</p>
+        <button class="add" data-bs-toggle="modal" data-bs-target="#agregarUsuario" (click)="enableUserField()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+            <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/>
+          </svg>
+        </button>
+        <div class="table">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                <thead>
+                  <tr>
+                    <th>CUI O ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Accciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let usuario of usuarios">
+                    <td>{{usuario.id}}</td>
+                    <td>{{usuario.firstName}}</td>
+                    <td>{{usuario.lastName}}</td>
+                    <td class="actions">
+                      <Button class="action_button" data-bs-toggle="modal" data-bs-target="#verUsuario" (click)="catchInformacion(usuario._id, 'visualizar')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                          <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                          <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                        </svg>
+                      </Button>
+                      <Button class="action_button" data-bs-toggle="modal" data-bs-target="#editarUsuario" (click)="catchInformacion(usuario._id, 'modificar')" [disabled]="identity.rol != 'ADMIN'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                          <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                          <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                        </svg>
+                      </Button>
+                      <button class="action_button" data-bs-toggle="modal" data-bs-target="#eliminarUsuario" (click)="catchInformacion(usuario._id, 'eliminar')" [disabled]="identity.rol != 'ADMIN'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                          <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>                  
+                </tbody>
+            </table>
+        </div>
+        <!-- Modales -->
+        <div class="modal fade" id="verUsuario"  data-bs-backdrop="static" aria-labelledby="verUsuario" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="verUsuario">Usuario</h5>
+                
+              </div>
+              <div class="modal-body">
+                <form [formGroup]="userGenericForm">
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">CUI o Carnet</label>
+                    <input type="text" class="form-control" aria-describedby="emailHelp" formControlName="id"  >
+                    <div id="emailHelp" class="form-text">El CUI es para un bibliotecario y carnet para un estudiante</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Usuario</label>
+                    <input type="text" class="form-control" aria-describedby="emailHelp" formControlName="userName" >
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" aria-describedby="emailHelp" formControlName="firstName" >
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" aria-describedby="emailHelp" formControlName="lastName" >
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input type="email" class="form-control" aria-describedby="emailHelp" formControlName="email" >
+                  </div>
+                  <!-- <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" class="form-control" formControlName="password" disabled>
+                    <div id="emailHelp" class="form-text">Tu contraseña estara segura con nosotros</div>
+                  </div> -->
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Rol</label>
+                    <select class=" form-select" aria-label="Default select example" formControlName="rol" >
+                      <option selected>Open this select menu</option>
+                      <option value="ADMIN">Admin</option>
+                      <option value="ESTUDIANTE">Estudiante</option>
+                      <option value="BIBLIOTECARIO">Bibliotecario</option>
+                    </select>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetFormUser()">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="editarUsuario"  data-bs-backdrop="static" aria-labelledby="verUsuario" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="verUsuario">Editar Usuario</h5>
+                
+              </div>
+              <div class="modal-body">
+                <form [formGroup]="userGenericForm">
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">CUI o Carnet</label>
+                    <input type="text" class="form-control" aria-describedby="emailHelp" formControlName="id"  >
+                    <div id="emailHelp" class="form-text">El CUI es para un bibliotecario y carnet para un estudiante</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Usuario</label>
+                    <input type="text" class="form-control" aria-describedby="emailHelp" formControlName="userName">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" aria-describedby="emailHelp" formControlName="firstName" >
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" aria-describedby="emailHelp" formControlName="lastName" >
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input type="email" class="form-control" aria-describedby="emailHelp" formControlName="email" >
+                  </div>
+                  <!-- <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" class="form-control" formControlName="password" disabled>
+                    <div id="emailHelp" class="form-text">Tu contraseña estara segura con nosotros</div>
+                  </div> -->
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Rol</label>
+                    <select class=" form-select" aria-label="Default select example" formControlName="rol" >
+                      <option selected>Open this select menu</option>
+                      <option value="ADMIN">Admin</option>
+                      <option value="ESTUDIANTE">Estudiante</option>
+                      <option value="BIBLIOTECARIO">Bibliotecario</option>
+                    </select>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetFormUser()">Cerrar</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="editarUsuario(idInfo)">Actualizar Usuario</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="eliminarUsuario" data-bs-backdrop="static" aria-labelledby="verUsuario" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="verUsuario">Eliminar Usuario</h5>
+                
+              </div>
+              <div class="modal-body text-center">
+                <h4>
+                  Esta accion es irreversible
+                  <br>
+                  ¿Estas Seguro?
+                </h4>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="eliminarUsuario(idInfo)">Eliminar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="agregarUsuario"  data-bs-backdrop="static" aria-labelledby="verUsuario" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="verUsuario">Agregar Usuario</h5>
+                
+              </div>
+              <div class="modal-body">
+                <form [formGroup]="userGenericForm">
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">CUI o Carnet</label>
+                    <input type="text" class="form-control" aria-describedby="emailHelp" formControlName="id" required>
+                    <div id="emailHelp" class="form-text">El CUI es para un bibliotecario y carnet para un estudiante</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Usuario</label>
+                    <input type="text" class="form-control" aria-describedby="emailHelp" formControlName="userName" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" aria-describedby="emailHelp" formControlName="firstName" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" aria-describedby="emailHelp" formControlName="lastName" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input type="email" class="form-control" aria-describedby="emailHelp" formControlName="email" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" class="form-control" formControlName="password" required>
+                    <div id="emailHelp" class="form-text">Tu contraseña estara segura con nosotros</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Rol</label>
+                    <select class=" form-select" aria-label="Default select example" formControlName="rol" required>
+                      <option selected>Open this select menu</option>
+                      <option value="ADMIN" *ngIf="identity.rol == 'ADMIN'">Admin</option>
+                      <option value="ESTUDIANTE">Estudiante</option>
+                      <option value="BIBLIOTECARIO">Bibliotecario</option>
+                    </select>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button [disabled]="userGenericForm.invalid" type="submit" class="btn btn-primary"data-bs-dismiss="modal"  (click)="crearUsuario()">Crear Usuario</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Termina Modales -->
+    </div>
+    <div class="contenedorBibliografias">
+          <div class="titulos">
+            <h4>Bibliografias</h4>
+            <p>Adminsitra todas tus bibliografias</p>
+            <button class="add" data-bs-toggle="modal" data-bs-target="#agregarBibliografia" (click)="listenFormChanges()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/>
+              </svg>
+            </button>
+          </div>
+        <div class="table">
+            <table datatable [dtOptions]="dtOptionsB" [dtTrigger]="dtTriggerB" class="row-border hover">
+              <thead>
+                <tr>
+                  <th>Titulo</th>
+                  <th>Autor</th>
+                  <th>Copias</th>
+                  <th>Disponibles</th>
+                  <th>Tipo</th>
+                  <th>Accciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let bibliografia of bibliografias">
+                  <td>{{bibliografia.title}}</td>
+                  <td>{{bibliografia.author}}</td>
+                  <td>{{bibliografia.copy}}</td>
+                  <td>{{bibliografia.available}}</td>
+                  <td>{{bibliografia.rol | lowercase}}</td>
+                  <td class="actions">
+                    <Button class="action_button" data-bs-toggle="modal" data-bs-target="#verBibliografia" (click)="catchInformacionBibliografia(bibliografia._id, 'visualizar')">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                      </svg>
+                    </Button>
+                    <Button class="action_button" data-bs-toggle="modal" data-bs-target="#editarBibliografia" (click)="catchInformacionBibliografia(bibliografia._id, 'modificar')" [disabled]="identity.rol != 'ADMIN'">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                      </svg>
+                    </Button>
+                    <button class="action_button" data-bs-toggle="modal" data-bs-target="#eliminarBibliografia" (click)="catchInformacionBibliografia(bibliografia._id, 'eliminar')" [disabled]="identity.rol != 'ADMIN'">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                      </svg>
+                    </button>
+                  </td>
+                </tr>                  
+              </tbody>
+            </table>
+        </div>
+        <!-- Modales -->
+        <div class="modal fade" id="verBibliografia" data-bs-backdrop="static" aria-labelledby="verUsuario" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="verUsuario">Bibliografia</h5>       
+              </div>
+              <div class="modal-body">
+                <form class="row g-3" [formGroup]="bibliografiaGenericForm" *ngIf="isRevista">
+                  <div class="col-md-6">
+                    <label for="inputEmail4" class="form-label">Titulo</label>
+                    <input type="text" class="form-control" id="inputEmail4" formControlName="title">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputPassword4" class="form-label">Autor</label>
+                    <input type="text" class="form-control" id="inputPassword4" formControlName="author">
+                  </div>
+                  <div class="col-12">
+                    <label for="inputAddress" class="form-label">Edicion</label>
+                    <input type="text" class="form-control" id="inputAddress" formControlName="edition">
+                  </div>
+                  <div class="col-12">
+                    <label for="inputAddress2" class="form-label">Palabras claves</label>
+                    <input type="text" class="form-control" id="inputAddress2" placeholder="Comida, Aventura, Drama" formControlName="keywords">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputCity" class="form-label">Tema</label>
+                    <input type="text" class="form-control" id="inputCity" formControlName="theme">
+                  </div>
+                  <div class="col-md-6">
+                    <!-- Este es el importante -->
+                    <label for="inputState" class="form-label">Rol</label>
+                    <select id="inputState" class="form-select" formControlName="rol">
+                      <option selected>Elige una opcion...</option>
+                      <option value="REVISTA">Revista</option>
+                      <option value="LIBRO">Libro</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputZip" class="form-label">Copias</label>
+                    <input type="number" class="form-control" id="inputZip" formControlName="copy">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputZip" class="form-label">Copias Disponibles</label>
+                    <input type="number" class="form-control" id="inputZip" formControlName="available">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputState" class="form-label" >Frecuencia</label>
+                    <select id="inputState" class="form-select" formControlName="Actual_Frequency">
+                      <option selected>Elige una opcion...</option>
+                      <option value="Diaria">Diaria</option>
+                      <option value="Semanal">Semanal</option>
+                      <option value="Quincenal">Quincenal</option>
+                      <option value="Bimestral">Bimestral</option>
+                      <option value="Trimestral">Trimestral</option>
+                      <option value="Cuatrimestral">Cuatrimestral</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputZip" class="form-label">Ejemplares</label>
+                    <input type="number" class="form-control" id="inputZip" formControlName="Specimens">
+                  </div>
+                  <div class="col-md-12">
+                    <label for="inputZip" class="form-label">Descripcion</label>
+                    <textarea class="form-control" placeholder="Pon la descripcion aqui" id="floatingTextarea2" style="height: 100px" formControlName="description"></textarea>
+                  </div>
+                </form>
+                <form class="row g-3" [formGroup]="bibliografiaGenericForm" *ngIf="isLibro">
+                  <div class="col-md-6">
+                    <label for="inputEmail4" class="form-label">Titulo</label>
+                    <input type="text" class="form-control" id="inputEmail4" formControlName="title">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputPassword4" class="form-label">Autor</label>
+                    <input type="text" class="form-control" id="inputPassword4" formControlName="author">
+                  </div>
+                  <div class="col-12">
+                    <label for="inputAddress" class="form-label">Edicion</label>
+                    <input type="text" class="form-control" id="inputAddress" formControlName="edition">
+                  </div>
+                  <div class="col-12">
+                    <label for="inputAddress2" class="form-label">Palabras claves</label>
+                    <input type="text" class="form-control" id="inputAddress2" placeholder="Comida, Aventura, Drama" formControlName="keywords">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputCity" class="form-label">Tema</label>
+                    <input type="text" class="form-control" id="inputCity" formControlName="theme">
+                  </div>
+                  <div class="col-md-6">
+                    <!-- Este es el importante -->
+                    <label for="inputState" class="form-label">Rol</label>
+                    <select id="inputState" class="form-select" formControlName="rol">
+                      <option selected>Elige una opcion...</option>
+                      <option value="REVISTA">Revista</option>
+                      <option value="LIBRO">Libro</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputZip" class="form-label">Copias</label>
+                    <input type="number" class="form-control" id="inputZip" formControlName="copy">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputZip" class="form-label">Copias Disponibles</label>
+                    <input type="number" class="form-control" id="inputZip" formControlName="available">
+                  </div>
+                  <div class="col-md-12">
+                    <label for="inputZip" class="form-label">Descripcion</label>
+                    <textarea class="form-control" placeholder="Pon la descripcion aqui" id="floatingTextarea2" style="height: 100px" formControlName="description"></textarea>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetFormBibliografia()">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="editarBibliografia"  data-bs-backdrop="static" aria-labelledby="verUsuario" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="verUsuario">Editar Bibliografia</h5>         
+              </div>
+              <div class="modal-body">
+                <form class="row g-3" [formGroup]="bibliografiaGenericForm" *ngIf="isRevista">
+                  <div class="col-md-6">
+                    <label for="inputEmail4" class="form-label">Titulo</label>
+                    <input type="text" class="form-control" id="inputEmail4" formControlName="title">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputPassword4" class="form-label">Autor</label>
+                    <input type="text" class="form-control" id="inputPassword4" formControlName="author">
+                  </div>
+                  <div class="col-12">
+                    <label for="inputAddress" class="form-label">Edicion</label>
+                    <input type="text" class="form-control" id="inputAddress" formControlName="edition">
+                  </div>
+                  <div class="col-12">
+                    <label for="inputAddress2" class="form-label">Palabras claves</label>
+                    <input type="text" class="form-control" id="inputAddress2" placeholder="Comida, Aventura, Drama" formControlName="keywords">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputCity" class="form-label">Tema</label>
+                    <input type="text" class="form-control" id="inputCity" formControlName="theme">
+                  </div>
+                  <div class="col-md-6">
+                    <!-- Este es el importante -->
+                    <label for="inputState" class="form-label">Rol</label>
+                    <select id="inputState" class="form-select" formControlName="rol">
+                      <option selected>Elige una opcion...</option>
+                      <option value="REVISTA">Revista</option>
+                      <option value="LIBRO">Libro</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputZip" class="form-label">Copias</label>
+                    <input type="number" class="form-control" id="inputZip" formControlName="copy">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputZip" class="form-label">Copias Disponibles</label>
+                    <input type="number" class="form-control" id="inputZip" formControlName="available">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputState" class="form-label" >Frecuencia</label>
+                    <select id="inputState" class="form-select" formControlName="Actual_Frequency">
+                      <option selected>Elige una opcion...</option>
+                      <option value="Diaria">Diaria</option>
+                      <option value="Semanal">Semanal</option>
+                      <option value="Quincenal">Quincenal</option>
+                      <option value="Bimestral">Bimestral</option>
+                      <option value="Trimestral">Trimestral</option>
+                      <option value="Cuatrimestral">Cuatrimestral</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputZip" class="form-label">Ejemplares</label>
+                    <input type="number" class="form-control" id="inputZip" formControlName="Specimens">
+                  </div>
+                  <div class="col-md-12">
+                    <label for="inputZip" class="form-label">Descripcion</label>
+                    <textarea class="form-control" placeholder="Pon la descripcion aqui" id="floatingTextarea2" style="height: 100px" formControlName="description"></textarea>
+                  </div>
+                </form>
+                <form class="row g-3" [formGroup]="bibliografiaGenericForm" *ngIf="isLibro">
+                  <div class="col-md-6">
+                    <label for="inputEmail4" class="form-label">Titulo</label>
+                    <input type="text" class="form-control" id="inputEmail4" formControlName="title">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputPassword4" class="form-label">Autor</label>
+                    <input type="text" class="form-control" id="inputPassword4" formControlName="author">
+                  </div>
+                  <div class="col-12">
+                    <label for="inputAddress" class="form-label">Edicion</label>
+                    <input type="text" class="form-control" id="inputAddress" formControlName="edition">
+                  </div>
+                  <div class="col-12">
+                    <label for="inputAddress2" class="form-label">Palabras claves</label>
+                    <input type="text" class="form-control" id="inputAddress2" placeholder="Comida, Aventura, Drama" formControlName="keywords">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputCity" class="form-label">Tema</label>
+                    <input type="text" class="form-control" id="inputCity" formControlName="theme">
+                  </div>
+                  <div class="col-md-6">
+                    <!-- Este es el importante -->
+                    <label for="inputState" class="form-label">Rol</label>
+                    <select id="inputState" class="form-select" formControlName="rol">
+                      <option selected>Elige una opcion...</option>
+                      <option value="REVISTA">Revista</option>
+                      <option value="LIBRO">Libro</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6" *ngIf="isRevistaForm">
+                    <label for="inputState" class="form-label" >Frecuencia</label>
+                    <select id="inputState" class="form-select" formControlName="Actual_Frequency">
+                      <option selected>Elige una opcion...</option>
+                      <option value="Diaria">Diaria</option>
+                      <option value="Semanal">Semanal</option>
+                      <option value="Quincenal">Quincenal</option>
+                      <option value="Bimestral">Bimestral</option>
+                      <option value="Trimestral">Trimestral</option>
+                      <option value="Cuatrimestral">Cuatrimestral</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6" *ngIf="isRevistaForm">
+                    <label for="inputZip" class="form-label">Ejemplares</label>
+                    <input type="number" class="form-control" id="inputZip" formControlName="Specimens">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputZip" class="form-label">Copias</label>
+                    <input type="number" class="form-control" id="inputZip" formControlName="copy">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputZip" class="form-label">Copias Disponibles</label>
+                    <input type="number" class="form-control" id="inputZip" formControlName="available">
+                  </div>
+                  <div class="col-md-12">
+                    <label for="inputZip" class="form-label">Descripcion</label>
+                    <textarea class="form-control" placeholder="Pon la descripcion aqui" id="floatingTextarea2" style="height: 100px" formControlName="description"></textarea>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetFormBibliografia()" >Cerrar</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="editarBibliografia(idInfo)" *ngIf="isRevista">Actualizar Revista</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="editarBibliografia(idInfo)" *ngIf="isLibro">Actualizar Libro</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="eliminarBibliografia"  data-bs-backdrop="static" aria-labelledby="verUsuario" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="verUsuario">Eliminar Bibliografia</h5>
+                
+              </div>
+              <div class="modal-body text-center">
+                <h4>
+                  Esta accion es irreversible
+                  <br>
+                  ¿Estas Seguro?
+                </h4>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="eliminarBiblio(idBiblio)">Eliminar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="agregarBibliografia"  data-bs-backdrop="static" aria-labelledby="verUsuario" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="verUsuario">Agregar Bibliografia</h5>    
+              </div>
+              <div class="modal-body">
+                <form class="row g-3" [formGroup]="bibliografiaGenericForm">
+                  <div class="col-md-6">
+                    <label for="inputEmail4" class="form-label">Titulo</label>
+                    <input type="text" class="form-control" id="inputEmail4" formControlName="title" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputPassword4" class="form-label">Autor</label>
+                    <input type="text" class="form-control" id="inputPassword4" formControlName="author" required>
+                  </div>
+                  <div class="col-12">
+                    <label for="inputAddress" class="form-label">Edicion</label>
+                    <input type="text" class="form-control" id="inputAddress" formControlName="edition" required>
+                  </div>
+                  <div class="col-12">
+                    <label for="inputAddress2" class="form-label">Palabras claves</label>
+                    <input type="text" class="form-control" id="inputAddress2" placeholder="Comida, Aventura, Drama" formControlName="keywords" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputCity" class="form-label">Tema</label>
+                    <input type="text" class="form-control" id="inputCity" formControlName="theme" required>
+                  </div>
+                  <div class="col-md-6">
+                    <!-- Este es el importante -->
+                    <label for="inputState" class="form-label">Rol</label>
+                    <select id="inputState" class="form-select" formControlName="rol" required>
+                      <option selected>Elige una opcion...</option>
+                      <option value="REVISTA">Revista</option>
+                      <option value="LIBRO">Libro</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputZip" class="form-label">Copias</label>
+                    <input type="number" class="form-control" id="inputZip" formControlName="copy" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputZip" class="form-label">Copias Disponibles</label>
+                    <input type="number" class="form-control" id="inputZip" formControlName="available" required>
+                  </div>
+                  <div class="col-md-6" *ngIf="isRevistaForm">
+                    <label for="inputState" class="form-label" >Frecuencia</label>
+                    <select id="inputState" class="form-select" formControlName="Actual_Frequency">
+                      <option selected>Elige una opcion...</option>
+                      <option value="Diaria">Diaria</option>
+                      <option value="Semanal">Semanal</option>
+                      <option value="Quincenal">Quincenal</option>
+                      <option value="Bimestral">Bimestral</option>
+                      <option value="Trimestral">Trimestral</option>
+                      <option value="Cuatrimestral">Cuatrimestral</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6" *ngIf="isRevistaForm">
+                    <label for="inputZip" class="form-label">Ejemplares</label>
+                    <input type="number" class="form-control" id="inputZip" formControlName="Specimens">
+                  </div>
+                  <div class="col-md-12">
+                    <label for="inputZip" class="form-label">Descripcion</label>
+                    <textarea class="form-control" placeholder="Pon la descripcion aqui" id="floatingTextarea2" style="height: 100px" formControlName="description" required></textarea>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" (click)="crearBibliografia()" *ngIf="isLibroForm" [disabled]="bibliografiaGenericForm.invalid">Crear Libro</button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" (click)="crearBibliografia()" *ngIf="isRevistaForm" [disabled]="bibliografiaGenericForm.invalid">Crear Revista</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Termina Modales -->
+    </div>
+    <div class="contenedorReportes">
+      <div class="titulos">
+        <h4>Reportes</h4>
+        <p>Genera reportes de lo que tu quieras</p>
+        <form [formGroup]="reportesForm">
+          <select class="selector" formControlName="tipo">
+            <option value="" selected disabled>Selecciona una opcion</option>
+            <option value="Usuarios que más bibliografías han prestado.">Usuarios que más bibliografías han prestado.</option>
+            <option value="Libros más prestados.">Libros más prestados.</option>
+            <option value="Revistas más prestadas.">Revistas más prestadas.</option>
+            <option value="Libros más buscados.">Libros más buscados.</option>
+            <option value="Revistas más buscadas.">Revistas más buscadas.</option>
+          </select>
+        </form>
+      </div>
+      <div class="reportes">
+        <div class="loader" *ngIf="isNoOptionSelected == true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+          </svg>
+          <p>Aun no tienes ningun reporte seleccionado</p>
+        </div>
+        <div class="loader" *ngIf="isLoadingReportes == true">
+          <div class="spinner-grow" style="width: 4rem; height: 4rem;" role="status">
+              <span class="sr-only"></span>
+          </div>
+          <p>Cargando...</p>
+        </div>
+        <div class="tabla">
+          <table class="table table-striped table-responsive" *ngIf="reporteDataGrafica.length >=1 && reporteData.length >= 1">
+            <thead>
+              <tr>
+                <th scope="col">Titulo</th>
+                <th scope="col">Autor</th>
+                <th scope="col">Copias</th>
+                <th scope="col">Disponibles</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let biblio of reporteData">
+                <th scope="row">{{biblio.title}}</th>
+                <td>{{biblio.author}}</td>
+                <td>{{biblio.copy}}</td>
+                <td>{{biblio.available}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table table-striped table-responsive" *ngIf="reporteDataGrafica.length >=1 && reporteDataUser.length >= 1">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Usuario</th>
+                <th scope="col">Rol</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of reporteDataUser">
+                <td>{{user._id[0].id}}</td>
+                <th scope="row">{{user._id[0].firstName}}</th>
+                <td>{{user._id[0].userName}}</td>
+                <td>{{user._id[0].rol | lowercase}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="grafica" *ngIf="reporteDataGrafica.length >= 1">
+          <ngx-charts-bar-vertical-2d
+          [view]="view"
+          [scheme]="colorScheme"
+          [legend]="legend"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [xAxis]="xAxis"
+          [yAxis]="yAxis"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel"
+          [results]="reporteDataGrafica">
+          </ngx-charts-bar-vertical-2d>
+        </div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<app-nav></app-nav>
+<div class="books">
+    <div class="loader" *ngIf="isLoading == true">
+        <div class="spinner-grow" style="width: 4rem; height: 4rem;" role="status">
+            <span class="sr-only"></span>
+        </div>
+        <p>Loading...</p>
+    </div>
+    <div class="container">
+        <div class="search">
+            <h4>Buscar Libros</h4>
+            <p class="text-muted" *ngIf="coincidencias">
+                Se encontraron {{coincidencias}} coincidencias
+            </p>
+            <form [formGroup]="searchForm">
+                <input type="text" formControlName="search">
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-4" *ngFor="let book of books">
+                <div class="card-group">
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                        <p class="card-text">{{book.description}}</p>
+                        <p>
+                            <span>
+                                Disponibles: <span class="badge rounded-pill bg-info">{{book.available}}</span>
+                            </span>
+                        </p>
+                        <p>
+                            <span>
+                                Autor: <b><i>{{book.author}}</i></b>
+                            </span>
+                        </p>
+                        <p>
+                            <button class="btn booksCustomButton" (click)="loanBook(book._id)">Prestar</button>
+                        </p>
+                      </div>
+                      <div class="card-footer">
+                        <small class="text-muted">Fecha de Publicación: {{book.fecha | date}}</small>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

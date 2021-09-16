@@ -1,0 +1,49 @@
+.home{
+    background: url('../../../assets/img/jess-bailey-X5gDoysLbBc-unsplash.jpg');
+    background-position: center;
+    height: 100vh;
+    width: 100%;
+    background-attachment: fixed;
+    .titulos{
+        position: relative;
+        display: block;
+        padding: 20% 0% 0 8%;
+        h3{
+            font-size: 4em;
+            font-weight: 500;
+            color: #333;
+        }
+        p{
+            font-weight: 200;
+            font-size: 18pt;
+            text-decoration: none;
+            color: #333;
+        }
+        .btn-customHome{
+            border-radius: 5px;
+            background-color: white;
+            color: #333;
+            margin-left: 10px;
+        }
+        .btn-customHomeK{
+            border-radius: 5px;
+            background-color: #BD7C20;
+            color: #fff;
+            margin-left: 10px;
+        }
+        .modal-body{
+            .custom-img{
+                width: 100%;
+                padding: 20px;
+                height: 50%;
+                object-fit: cover;    
+            }
+            p{
+                text-align: justify;
+                padding: 20px;
+                font-size: 12pt;
+            }
+        }
+        
+    }
+}
