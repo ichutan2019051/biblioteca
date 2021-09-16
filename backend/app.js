@@ -10,7 +10,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors({origin: 'http://localhost:4200'}));
+app.use(cors({origin: 'https://biblioteca-26160.web.app'}));
 routes(app);
 
 module.exports = app;
